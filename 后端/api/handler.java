@@ -5,8 +5,10 @@ import io.vercel.functions.HttpRequestHandler;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
-public class handler implements HttpRequestHandler {
+public class Handler implements HttpRequestHandler {
 
     // --- 所有静态变量和工具方法从 houduan.java 迁移过来 ---
     private static final String DIAGNOSIS_API_KEY = "6854b6c040ad67027f97f916.zHhzUFvXCOzLNOcM73O7FE7ajU7GqK5w";
@@ -27,61 +29,75 @@ public class handler implements HttpRequestHandler {
     // --- Vercel 的主入口方法 ---
     @Override
     public void handle(HttpRequest request, HttpResponse response) throws IOException {
-        String path = request.getUri().getPath();
-        String method = request.getMethod();
+        try {
+            String path = request.getUri().getPath();
+            String method = request.getMethod();
 
-        // 全局CORS处理
-        response.getHeaders().put("Access-Control-Allow-Origin", "*");
-        response.getHeaders().put("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE");
-        response.getHeaders().put("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            // 全局CORS处理
+            response.getHeaders().put("Access-Control-Allow-Origin", "*");
+            response.getHeaders().put("Access-control-allow-methods", "GET, POST, OPTIONS, DELETE");
+            response.getHeaders().put("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-        if ("OPTIONS".equalsIgnoreCase(method)) {
-            response.setStatusCode(204);
-            return;
-        }
+            if ("OPTIONS".equalsIgnoreCase(method)) {
+                response.setStatusCode(204);
+                return;
+            }
 
-        // --- 路由分发 ---
-        switch (path) {
-            case "/api/auth/send-code":
-                handleSendCode(request, response);
-                break;
-            case "/api/auth/login-phone":
-            case "/api/auth/login-account":
-                handleLogin(request, response);
-                break;
-            case "/api/auth/guest-login":
-                handleGuestLogin(request, response);
-                break;
-            case "/api/user/profile":
-                handleUserProfile(request, response);
-                break;
-            case "/api/health/home":
-                handleHealthHome(request, response);
-                break;
-            case "/api/health/records":
-                handleHealthRecords(request, response);
-                break;
-            case "/api/ai/diagnosis":
-                handleDiagnosis(request, response);
-                break;
-            case "/api/ai/ask":
-                handleAsk(request, response);
-                break;
-            case "/api/medicine/remind":
-                handleMedicineRemind(request, response);
-                break;
-            case "/api/community/news":
-                handleCommunityNews(request, response);
-                break;
-            case "/api/community/discuss":
-                handleCommunityDiscuss(request, response);
-                break;
-            case "/api/auth/forgot-password":
-                handleForgotPassword(request, response);
-                break;
-            default:
-                sendJsonResponse(response, 404, "{\"code\": 404, \"msg\": \"Not Found\"}");
-                break;
+            // --- 路由分发 ---
+            switch (path) {
+                case "/api/auth/send-code":
+                    handleSendCode(request, response);
+                    break;
+                case "/api/auth/login-phone":
+                case "/api/auth/login-account":
+                    handleLogin(request, response);
+                    break;
+                case "/api/auth/guest-login":
+                    handleGuestLogin(request, response);
+                    break;
+                case "/api/user/profile":
+                    handleUserProfile(request, response);
+                    break;
+                case "/api/health/home":
+                    handleHealthHome(request, response);
+                    break;
+                case "/api/health/records":
+                    handleHealthRecords(request, response);
+                    break;
+                case "/api/ai/diagnosis":
+                    handleDiagnosis(request, response);
+                    break;
+                case "/api/ai/ask":
+                    handleAsk(request, response);
+                    break;
+                case "/api/medicine/remind":
+                    handleMedicineRemind(request, response);
+                    break;
+                case "/api/community/news":
+                    handleCommunityNews(request, response);
+                    break;
+                case "/api/community/discuss":
+                    handleCommunityDiscuss(request, response);
+                    break;
+                case "/api/auth/forgot-password":
+                    handleForgotPassword(request, response);
+                    break;
+                default:
+                    sendJsonResponse(response, 404, "{\"code\": 404, \"msg\": \"Not Found\"}");
+                    break;
+            }
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.getHeaders().put("Content-Type", "application/json; charset=UTF-8");
+            
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+            
+            String errorMessage = e.getMessage() != null ? e.getMessage() : "An unexpected error occurred.";
+
+            String jsonError = "{\"code\":500, \"msg\":\"" + jsonEscape(errorMessage) + "\", \"stacktrace\":\"" + jsonEscape(exceptionAsString) + "\"}";
+            response.getBody().write(jsonError.getBytes(StandardCharsets.UTF_8));
         }
     }
 
