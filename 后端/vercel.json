@@ -1,0 +1,11 @@
+{
+    "builds": [
+      {
+        "src": "api/handler.java",
+        "use": "@vercel/java"
+      }
+    ],
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "/api/handler" }
+    ]
+  }
