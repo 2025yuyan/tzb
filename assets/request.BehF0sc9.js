@@ -1,0 +1,1 @@
+import{V as a}from"./index-BVQSbHE9.js";const e=()=>{let a="";return a="https://tiiaozhanbei.vercel.app/api","https://tiiaozhanbei.vercel.app/api"},t=t=>new Promise((i,s)=>{a({...t,url:e()+t.url,success:a=>{200===a.statusCode?i(a.data):s(a)},fail:a=>{s(a)}})});export{t as r};
