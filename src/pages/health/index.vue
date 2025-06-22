@@ -376,6 +376,7 @@ import {
   GridComponent,
 } from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
+import request from '../../utils/request.js';
 
 use([
   CanvasRenderer,
@@ -430,25 +431,23 @@ function sendMsg() {
   const userMsg = inputText.value;
   inputText.value = '';
   // 调用后端AI问答接口
-  uni.request({
-    url: '/api/ai/ask',
+  request({
+    url: '/ai/ask',
     method: 'POST',
     header: {
       'Authorization': 'Bearer ' + uni.getStorageSync('token'),
       'Content-Type': 'application/json'
     },
-    data: { question: userMsg },
-    success: res => {
-      if (res.data && res.data.code === 0) {
-        chatList.value.push({ role: 'ai', content: res.data.answer });
-        if (res.data.audioUrl) playAudio(res.data.audioUrl);
-      } else {
-        chatList.value.push({ role: 'ai', content: res.data.msg || 'AI服务暂不可用' });
-      }
-    },
-    fail: () => {
-      chatList.value.push({ role: 'ai', content: '网络异常，AI服务暂不可用' });
+    data: { question: userMsg }
+  }).then(data => {
+    if (data && data.code === 0) {
+      chatList.value.push({ role: 'ai', content: data.answer });
+      if (data.audioUrl) playAudio(data.audioUrl);
+    } else {
+      chatList.value.push({ role: 'ai', content: data.msg || 'AI服务暂不可用' });
     }
+  }).catch(() => {
+    chatList.value.push({ role: 'ai', content: '网络异常，AI服务暂不可用' });
   });
 }
 

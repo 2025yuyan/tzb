@@ -26,6 +26,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
+import request from '../../utils/request.js';
 
 const symptoms = ref('');
 const result = ref('');
@@ -62,26 +64,25 @@ function submitDiagnosis() {
   const token = uni.getStorageSync('token'); // 假设token已存储
   
   console.log("准备发送诊断请求...");
-  uni.request({
-    url: 'https://tzb-two.vercel.app/api/ai/diagnosis',
+  request({
+    url: '/ai/diagnosis',
     method: 'POST',
+    header: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
     data: {
       symptoms: symptoms.value,
       imageUrl: imageUrl.value
-    },
-    header: {
-      Authorization: 'Bearer ' + token
-    },
-    success: (res) => {
-      console.log("请求成功:", res.data);
-      result.value = res.data.diagnosis || '未获取到诊断建议';
-      loading.value = false;
-    },
-    fail: (err) => {
-      console.error("请求失败:", err); // 重点看这里有没有输出
-      uni.showToast({ title: '请求失败', icon: 'none' });
-      loading.value = false;
     }
+  }).then(data => {
+    console.log("请求成功:", data);
+    result.value = data.diagnosis || '未获取到诊断建议';
+    loading.value = false;
+  }).catch(err => {
+    console.error("请求失败:", err);
+    uni.showToast({ title: '请求失败', icon: 'none' });
+    loading.value = false;
   });
 }
 </script>
