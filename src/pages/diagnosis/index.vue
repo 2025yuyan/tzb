@@ -141,7 +141,7 @@ function submitDiagnosis() {
   color: #6a8dff;
   border: none;
   border-radius: 18px;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   height: 64px;
   display: flex;
