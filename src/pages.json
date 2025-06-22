@@ -1,0 +1,40 @@
+{
+	"pages": [ 
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/guardian/index",
+			"style": {
+				"navigationBarTitleText": "监护人模式"
+			}
+		},
+		{
+			"path": "pages/health/index",
+			"style": {
+				"navigationBarTitleText": "医影随护"
+			}
+		},
+		{
+			"path": "pages/diagnosis/index",
+			"style": {
+				"navigationBarTitleText": "智能诊断"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
