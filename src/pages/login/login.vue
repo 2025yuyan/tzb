@@ -102,7 +102,7 @@ function guestLogin() {
 }
 
 function guardianLogin() {
-  uni.navigateTo({ url: '/pages/guardian/index' });
+  uni.navigateTo({ url: 'pages/guardian/index' });
 }
 
 function showToast(msg) {

@@ -138,7 +138,7 @@ const medicationList = ref([]);
 
 const goToDiagnosis = () => {
   uni.navigateTo({
-    url: '/pages/diagnosis/index'
+    url: 'pages/diagnosis/index'
   });
 };
 

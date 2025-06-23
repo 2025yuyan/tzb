@@ -121,7 +121,7 @@
 <script setup>
 function navigateToMedicationReminder() {
   uni.navigateTo({
-    url: '/pages/medication/reminder'
+    url: 'pages/medication/reminder'
   });
 }
 </script>

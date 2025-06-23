@@ -408,52 +408,52 @@ function showBotBubble() {
 const chartOption = ref({});
 
 function goDiagnosis() {
-  uni.navigateTo({ url: '/pages/diagnosis/index' });
+  uni.navigateTo({ url: 'pages/diagnosis/index' });
 }
 
 function goToMedicationReminder() {
-  uni.navigateTo({ url: '/pages/medication/reminder' });
+  uni.navigateTo({ url: 'pages/medication/reminder' });
 }
 
 function goToBooking() {
 	uni.navigateTo({
-		url: '/pages/appointment/booking'
+		url: 'pages/appointment/booking'
 	});
 }
 
 function goToEmergencyContact() {
 	uni.navigateTo({
-		url: '/pages/emergency/contact'
+		url: 'pages/emergency/contact'
 	});
 }
 
 function goToConsultation() {
 	uni.navigateTo({
-		url: '/pages/consultation/chat'
+		url: 'pages/consultation/chat'
 	});
 }
 
 function goToProfile() {
 	uni.navigateTo({
-		url: '/pages/profile/view'
+		url: 'pages/profile/view'
 	});
 }
 
 function goToHealthHistory() {
 	uni.navigateTo({
-		url: '/pages/history/health'
+		url: 'pages/history/health'
 	});
 }
 
 function goToHospitalReports() {
 	uni.navigateTo({
-		url: '/pages/reports/hospital'
+		url: 'pages/reports/hospital'
 	});
 }
 
 function goToDoctorRecords() {
 	uni.navigateTo({
-		url: '/pages/records/doctor'
+		url: 'pages/records/doctor'
 	});
 }
 
