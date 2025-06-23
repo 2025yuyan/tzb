@@ -37,13 +37,16 @@
       <div class="bg-white rounded-xl shadow-sm p-6 card-hover text-center">
         <div class="flex justify-center mb-4">
           <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-            <text class="fas fa-pills text-primary text-xl">服药提醒设置</text>
+            <text class="fas fa-pills text-primary text-xl">服药提醒</text>
           </div>
         </div>
-        <div class="text-left">
-          <span class="text-lg font-normal">08:00-降压药——1片</span><br>
-          <span class="text-lg font-normal">12:00-糖尿病药——1粒</span><br>
-          <span class="text-lg font-normal">20:00-睡前助眠药——1粒</span>
+        <div v-if="medicationList.length > 0" class="text-left">
+          <div v-for="item in medicationList" :key="item.id">
+            <span class="text-lg font-normal">{{ item.time }} - {{ item.name }}</span>
+          </div>
+        </div>
+        <div v-else class="text-gray-500 text-center py-4">
+          <span class="text-lg font-normal">今日无服药提醒</span>
         </div>
       </div>
       <div @click="goToDiagnosis" class="bg-white rounded-xl shadow-sm p-6 card-hover cursor-pointer">
@@ -119,6 +122,7 @@ import {
   GridComponent,
 } from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
+import { getReminders } from '../../../utils/medicationStore.js';
 
 use([
   CanvasRenderer,
@@ -130,6 +134,7 @@ use([
   GridComponent
 ]);
 
+const medicationList = ref([]);
 
 const goToDiagnosis = () => {
   uni.navigateTo({
@@ -140,6 +145,9 @@ const goToDiagnosis = () => {
 const chartOption = ref({});
 
 onMounted(() => {
+  const allReminders = getReminders();
+  medicationList.value = allReminders.filter(r => r.enabled);
+
   chartOption.value = {
     tooltip: {
       trigger: 'axis'

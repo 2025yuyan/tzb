@@ -16,6 +16,12 @@
         <image :src="imageUrl" mode="aspectFit" class="img-thumb" />
       </view>
       <button class="diagnosis-btn" @click="submitDiagnosis" :disabled="loading">{{ loading ? '诊断中...' : '提交诊断' }}</button>
+      <view class="quick-actions">
+        <p class="tixing">你可能需要：</p>
+        <button class="quick-action-btn" @click="navigateToMedicationReminder">
+          <text class="fas fa-pills"></text> 服药提醒设置
+        </button>
+      </view>
       <view v-if="result" class="diagnosis-result">
         <text class="result-title">诊断建议：</text>
         <text class="result-content">{{ result }}</text>
@@ -52,6 +58,12 @@ function chooseImage() {
 function previewImage() {
   uni.previewImage({
     urls: [imageUrl.value]
+  });
+}
+
+function navigateToMedicationReminder() {
+  uni.navigateTo({
+    url: '/pages/medication/reminder'
   });
 }
 
@@ -200,5 +212,18 @@ function submitDiagnosis() {
   font-size: 18px;
   color: #333;
   line-height: 1.7;
+}
+.quick-actions {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.quick-action-btn {
+  background: none;
+  border: none;
+  color: #6a8dff;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 </style> 

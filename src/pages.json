@@ -29,6 +29,54 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path": "pages/medication/reminder",
+			"style": {
+				"navigationBarTitleText": "服药提醒设置"
+			}
+		},
+		{
+			"path": "pages/appointment/booking",
+			"style": {
+				"navigationBarTitleText": "预约挂号"
+			}
+		},
+		{
+			"path": "pages/emergency/contact",
+			"style": {
+				"navigationBarTitleText": "紧急联系"
+			}
+		},
+		{
+			"path": "pages/consultation/chat",
+			"style": {
+				"navigationBarTitleText": "健康咨询"
+			}
+		},
+		{
+			"path": "pages/profile/view",
+			"style": {
+				"navigationBarTitleText": "健康档案"
+			}
+		},
+		{
+			"path": "pages/history/health",
+			"style": {
+				"navigationBarTitleText": "健康历史记录"
+			}
+		},
+		{
+			"path": "pages/reports/hospital",
+			"style": {
+				"navigationBarTitleText": "医院检查报告"
+			}
+		},
+		{
+			"path": "pages/records/doctor",
+			"style": {
+				"navigationBarTitleText": "医生诊疗记录"
+			}
 		}
 	],
 	"globalStyle": {

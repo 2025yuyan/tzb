@@ -76,6 +76,13 @@
     </section>
 
     <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <h2 class="text-xl font-bold mb-4">用药管理</h2>
+      <button @click="navigateToMedicationReminder" class="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg w-full transition-all duration-300">
+        服药提醒设置
+      </button>
+    </section>
+
+    <section class="bg-white rounded-xl shadow-sm p-6 mb-8">
       <h2 class="text-xl font-bold mb-4">设备状态</h2>
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-gray-50 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -112,6 +119,11 @@
 </template>
 
 <script setup>
+function navigateToMedicationReminder() {
+  uni.navigateTo({
+    url: '/pages/medication/reminder'
+  });
+}
 </script>
 
 <style scoped>

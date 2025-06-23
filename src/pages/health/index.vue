@@ -73,25 +73,16 @@
           </view>
           <view class="bg-white rounded-xl shadow p-6 mb-8">
             <text class="text-xl font-bold mb-4">今日服药</text>
-            <view class="text-gray-700 space-y-3">
-                <view class="flex justify-between items-center">
+            <view v-if="medicationList.length > 0" class="text-gray-700 space-y-3">
+                <view v-for="item in medicationList" :key="item.id" class="flex justify-between items-center">
                     <view>
-                        <text class="text-xl font-medium">08:00</text> - <text class="text-xl">降压药 1 片</text>
+                        <text class="text-xl font-medium">{{ item.time }}</text> - <text class="text-xl">{{ item.name }}</text>
                     </view>
-                    <text class="text-sm text-warning">30分钟后</text>
+                    <text :class="['text-sm', item.status === '已服用' ? 'text-success' : 'text-warning']">{{ item.status }}</text>
                 </view>
-                <view class="flex justify-between items-center">
-                    <view>
-                        <text class="text-xl font-medium ">12:00</text> - <text class="text-xl"> 糖尿病药 1 粒   </text>
-                    </view>
-                    <text class="text-sm text-gray-500">未服用</text>
-                </view>
-                <view class="flex justify-between items-center">
-                    <view>
-                        <text class="text-xl font-medium">20:00</text> - <text class="text-xl">睡前助眠药 1 粒</text>
-                    </view>
-                    <text class="text-sm text-gray-500">未服用</text>
-                </view>
+            </view>
+            <view v-else class="text-gray-500 text-center py-4">
+              今日无服药提醒
             </view>
           <view class="bg-warning/10 rounded-lg p-4 flex items-start mt-6">
             <text class="fas fa-pills text-warning text-xl mr-3 mt-1">服药提醒</text>
@@ -106,21 +97,21 @@
           <view class="bg-white rounded-xl shadow p-6">
             <text class="text-xl font-bold mb-4">健康档案</text>
             <view class="space-y-4">
-              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover">
+              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover" @click="goToHealthHistory">
                 <view class="flex items-center">
                   <text class="fas fa-file-medical text-primary mr-3 w-6 text-center"></text>
                   <text class="text-xl">健康历史记录</text>
                 </view>
                 <text class="fas fa-chevron-right text-gray-400"></text>
               </view>
-              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover">
+              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover" @click="goToHospitalReports">
                 <view class="flex items-center">
                   <text class="fas fa-hospital text-primary mr-3 w-6 text-center"></text>
                   <text class="text-xl">医院检查报告</text>
                 </view>
                 <text class="fas fa-chevron-right text-gray-400"></text>
               </view>
-              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover">
+              <view class="bg-gray-50 rounded-lg p-4 flex items-center justify-between card-hover" @click="goToDoctorRecords">
                 <view class="flex items-center">
                   <text class="fas fa-stethoscope text-primary mr-3 w-6 text-center"></text>
                   <text class="text-xl">医生诊疗记录</text>
@@ -169,31 +160,31 @@
                 </view>
                 <text class="text-xl">智能诊断</text>
               </button>
-              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover">
+              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover" @click="goToMedicationReminder">
                 <view class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <text class="fas fa-pills text-primary text-3xl"></text>
                 </view>
                 <text class="text-xl">服药提醒</text>
               </button>
-              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover">
+              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover" @click="goToBooking">
                 <view class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <text class="fas fa-calendar text-primary text-3xl"></text>
                 </view>
                 <text class="text-xl">预约挂号</text>
               </button>
-              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover">
+              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover" @click="goToEmergencyContact">
                 <view class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <text class="fas fa-phone text-primary text-3xl"></text>
                 </view>
                 <text class="text-xl">紧急联系</text>
               </button>
-              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover">
+              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover" @click="goToConsultation">
                 <view class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <text class="fas fa-comment-medical text-primary text-3xl"></text>
                 </view>
                 <text class="text-xl">健康咨询</text>
               </button>
-              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover">
+              <button class="bg-gray-50 rounded-lg p-8 flex flex-col items-center card-hover" @click="goToProfile">
                 <view class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <text class="fas fa-file-medical text-primary text-3xl"></text>
                 </view>
@@ -377,6 +368,8 @@ import {
 } from 'echarts/components';
 import VChart, { THEME_KEY } from 'vue-echarts';
 import request from '../../utils/request.js';
+import { getReminders } from '../../utils/medicationStore.js';
+import { onShow } from '@dcloudio/uni-app';
 
 use([
   CanvasRenderer,
@@ -416,6 +409,52 @@ const chartOption = ref({});
 
 function goDiagnosis() {
   uni.navigateTo({ url: '/pages/diagnosis/index' });
+}
+
+function goToMedicationReminder() {
+  uni.navigateTo({ url: '/pages/medication/reminder' });
+}
+
+function goToBooking() {
+	uni.navigateTo({
+		url: '/pages/appointment/booking'
+	});
+}
+
+function goToEmergencyContact() {
+	uni.navigateTo({
+		url: '/pages/emergency/contact'
+	});
+}
+
+function goToConsultation() {
+	uni.navigateTo({
+		url: '/pages/consultation/chat'
+	});
+}
+
+function goToProfile() {
+	uni.navigateTo({
+		url: '/pages/profile/view'
+	});
+}
+
+function goToHealthHistory() {
+	uni.navigateTo({
+		url: '/pages/history/health'
+	});
+}
+
+function goToHospitalReports() {
+	uni.navigateTo({
+		url: '/pages/reports/hospital'
+	});
+}
+
+function goToDoctorRecords() {
+	uni.navigateTo({
+		url: '/pages/records/doctor'
+	});
 }
 
 const chatList = ref([
@@ -460,6 +499,33 @@ function playAudio(url) {
   innerAudio = uni.createInnerAudioContext();
   innerAudio.src = url;
   innerAudio.play();
+}
+
+const medicationList = ref([]);
+
+// 模拟服药状态，实际项目中应从后端获取
+function getMockStatus(time) {
+  // 简单模拟，假设8点前的已服用
+  const now = new Date();
+  const reminderTime = new Date(now.toDateString() + ' ' + time);
+  if (reminderTime < now) {
+    return '已服用';
+  }
+  return '未服用';
+}
+
+onShow(() => {
+  const allReminders = getReminders();
+  medicationList.value = allReminders
+    .filter(r => r.enabled)
+    .map(r => ({ ...r, status: getMockStatus(r.time) }));
+
+  // 刷新当前页面状态
+  setPage(activePage.value);
+});
+
+function setPage(page) {
+  // ... existing code ...
 }
 
 onMounted(() => {
